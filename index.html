@@ -14,7 +14,7 @@
 
    <body>
       <div class="row min-vh-100 no-gutters">
-         <header class="col-12 col-lg-3 bg-dark text-light d-flex flex-column p-4 p-lg-3">
+         <header class="col-12 col-lg-3 bg-dark text-light sticky-top d-flex flex-column p-4 p-lg-3">
             <h1 class="text-center">Taskmaster Pro Edition</h1>
             <button
                id="create-task"
@@ -25,16 +25,50 @@
                Add Task
             </button>
             <button id="remove-tasks" class="btn btn-block btn-danger">Delete All Tasks</button>
-            <p class="mt-auto">
+            <p class="mt-auto d-none d-lg-block">
                Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi voluptas architecto ipsa excepturi aut non
                laudantium sequi fugit officiis optio deleniti asperiores rem eius laborum maxime blanditiis culpa, quis
                iste?
             </p>
          </header>
-         <main class="col-12 col-lg-9">
-            <div class="m-5">
-               <h2>To Do</h2>
-               <ul id="list-toDo" class="list-group"></ul>
+         <main class="col-12 col-lg-9 d-flex flex-column">
+            <div class="m-5 row justify-content-around">
+               <!-- toDo Start -->
+               <div class="col-12 col-md-6 col-xl-3 mb-3">
+                  <div class="card">
+                     <h4 class="card-header bg-dark text-light">To Do</h4>
+                     <ul id="list-toDo" class="list-group"></ul>
+                  </div>
+               </div>
+               <!-- toDo End -->
+               <!-- inProgess Start -->
+               <div class="col-12 col-md-6 col-xl-3 mb-3">
+                  <div class="card">
+                     <h4 class="card-header bg-dark text-light">In Progress</h4>
+                     <ul id="list-inProgress" class="list-group"></ul>
+                  </div>
+               </div>
+               <!-- inProgess End -->
+               <!-- inReview Start -->
+               <div class="col-12 col-md-6 col-xl-3 mb-3">
+                  <div class="card">
+                     <h4 class="card-header bg-dark text-light">In Review</h4>
+                     <ul id="list-inReview" class="list-group"></ul>
+                  </div>
+               </div>
+               <!-- inReview End -->
+               <!-- Done Start -->
+               <div class="col-12 col-md-6 col-xl-3 mb-3">
+                  <div class="card">
+                     <h4 class="card-header bg-dark text-light">Done</h4>
+                     <ul id="list-done" class="list-group"></ul>
+                  </div>
+               </div>
+               <!-- Done End -->
+            </div>
+            <!-- Trash Bar Element -->
+            <div class="mt-auto" id="trash">
+               <div class="w-100 bg-danger p-3 text-center text-light display-4">Drop Here To Remove</div>
             </div>
          </main>
       </div>
@@ -60,7 +94,7 @@
                   <form>
                      <div class="form-group">
                         <label for="modalTaskDescription">Task description</label>
-                        <textarea id="modalTaskDescription" rows="3"></textarea>
+                        <textarea id="modalTaskDescription" rows="3" class="form-control"></textarea>
                      </div>
                      <div class="form-group">
                         <label for="modalDueDate">Due date</label>
