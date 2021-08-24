@@ -40,99 +40,6 @@ var saveTasks = function () {
    localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
-$(".list-group").on("click", "p", function () {
-   // get the textarea's current value/text
-   var text = $(this) //
-      .text() //
-      .trim(); //
-   var textInput = $("<textarea>") //
-      .addClass("form-control") //
-      .val(text); //
-
-   $(this).replaceWith(textInput);
-   textInput.trigger("focus");
-});
-
-$(".list-group").on("blur", "textarea", function () {
-   // Get the textarea's current value/text
-   var text = $(this) //
-      .val() //
-      .trim(); //
-
-   // Get the parent ul's ID attribute
-   var status = $(this) //
-      .closest(".list-group") //
-      .attr("id") //
-      .replace("list-", ""); //
-
-   // Get the task's position in the list of other li elements
-   var index = $(this) //
-      .closest(".list-group-item") //
-      .index(); //
-
-   tasks[status][index].text = text;
-   saveTasks();
-
-   // Recreate the <p> element
-   var taskP = $("<p>") //
-      .addClass("m-1") //
-      .text(text); //
-
-   // Replace textarea with p element
-   $(this).replaceWith(taskP);
-});
-
-// Due Date was clicked (with <span> element)
-$(".list-group").on("click", "Span", function () {
-   // Get current text from date
-   var date = $(this) //
-      .text() //
-      .trim(); //
-
-   // Create new input element
-   var dateInput = $("<input>") //
-      .attr("type", "text") //
-      .addClass("form-control") //
-      .val(date);
-
-   // Swap out elements
-   $(this).replaceWith(dateInput);
-
-   // Automatically focus on new element
-   dateInput.trigger("focus");
-});
-
-// Value of Date was changed. So now, change format back to original display properties
-$(".list-group").on("blur", "input[type='text']", function () {
-   // Get current text
-   var date = $(this) //
-      .val() //
-      .trim(); //
-
-   // Get the parent ul's ID attribute
-   var status = $(this) //
-      .closest(".list-group") //
-      .attr("id") //
-      .replace("list-", ""); //
-
-   // Get the task's position in the list of other <li> elements
-   var index = $(this) //
-      .closest(".list-group-item") //
-      .index(); //
-
-   // Update task in array and re-save to localStorage
-   tasks[status][index].date = date;
-   saveTasks();
-
-   // Recreate <span> element with bootstrap classes
-   var taskSpan = $("<span>") //
-      .addClass("badge badge-primary badge-pill") //
-      .text(date); //
-
-   // Replace input with <span> element
-   $(this).replaceWith(taskSpan);
-});
-
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function () {
    // clear values
@@ -174,6 +81,58 @@ $("#remove-tasks").on("click", function () {
       $("#list-" + key).empty();
    }
    saveTasks();
+});
+
+// Drag & Drop JQuery UI Feature
+$(".card .list-group").sortable({
+   connectWith: $(".card .list-group"),
+   scroll: false,
+   tolerance: "pointer",
+   helper: "clone",
+   activate: function (event) {
+      // console.log("activate", this);
+   },
+   deactivate: function (event) {
+      // console.log("deactivate", this);
+   },
+   over: function (event) {
+      // console.log("over", event.target);
+   },
+   out: function (event) {
+      // console.log("out", event.target);
+   },
+   update: function (event) {
+      // New array to store the task data in
+      var tempArr = [];
+
+      // Loop over current set of children in sortable list
+      $(this)
+         .children()
+         .each(function () {
+            var text = $(this) //
+               .find("p") //
+               .text() //
+               .trim(); //
+
+            var date = $(this) //
+               .find("span") //
+               .text() //
+               .trim(); //
+
+            // Add task data to the temp array as an object
+            tempArr.push({
+               text: text, //
+               date: date, //
+            });
+         });
+      // Trim down list's ID to match object property
+      var arrName = $(this) //
+         .attr("id") //
+         .replace("list-", ""); //
+      // Update array on tasks object and save
+      tasks[arrName] = tempArr;
+      saveTasks();
+   },
 });
 
 // load tasks for the first time
