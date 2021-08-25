@@ -150,5 +150,7 @@ $("#trash").droppable({
    },
 });
 
+$("#modalDueDate").datepicker();
+
 // load tasks for the first time
 loadTasks();
